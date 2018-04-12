@@ -40,4 +40,4 @@ There should be a different address for each department. At least 1 address shou
 
 The account should be placed in an OU that’s dependent on department
 
-Each user should be added to a department-based group - all members of the same department are members of the group
+Each user should be added to a department-based group - all members of the same department are members of the group.
