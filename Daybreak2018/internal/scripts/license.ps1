@@ -1,5 +1,5 @@
-New-PSFLicense -Product 'Daybreak2018' -Manufacturer 'Friedrich Weinmann' -ProductVersion $PSModuleVersion -ProductType Module -Name MIT -Version "1.0.0.0" -Date (Get-Date "2018-04-12") -Text @"
-Copyright (c) 2018 Friedrich Weinmann
+New-PSFLicense -Product 'Daybreak2018' -Manufacturer 'Iron Scripter Daybreak Faction' -ProductVersion $PSModuleVersion -ProductType Module -Name MIT -Version "1.0.0.0" -Date (Get-Date "2018-04-12") -Text @"
+Copyright (c) 2018 Iron Scripter Daybreak Faction
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

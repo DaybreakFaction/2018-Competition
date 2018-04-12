@@ -2,12 +2,12 @@
 
 # Load Configurations
 foreach ($file in (Get-ChildItem "$ModuleRoot\internal\configurations\*.ps1" -ErrorAction Ignore)) {
-	. Import-ModuleFile -Path $file.FullName
+    . Import-ModuleFile -Path $file.FullName
 }
 
 # Load Tab Expansion
 foreach ($file in (Get-ChildItem "$ModuleRoot\internal\tepp\*.tepp.ps1" -ErrorAction Ignore)) {
-	. Import-ModuleFile -Path $file.FullName
+    . Import-ModuleFile -Path $file.FullName
 }
 
 # Load Tab Expansion Assignment

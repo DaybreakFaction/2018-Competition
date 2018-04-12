@@ -1,48 +1,48 @@
 <#
     .NOTES
         The original test this is based upon was written by June Blender.
-		After several rounds of modifications it stands now as it is, but the honor remains hers.
+        After several rounds of modifications it stands now as it is, but the honor remains hers.
 
-		Thank you June, for all you have done!
+        Thank you June, for all you have done!
 
     .DESCRIPTION
-		This test evaluates the help for all commands in a module.
+        This test evaluates the help for all commands in a module.
 
-	.PARAMETER SkipTest
-		Disables this test.
-	
-	.PARAMETER CommandPath
-		List of paths under which the script files are stored.
-		This test assumes that all functions have their own file that is named after themselves.
-		These paths are used to search for commands that should exist and be tested.
-		Will search recursively and accepts wildcards, make sure only functions are found
+    .PARAMETER SkipTest
+        Disables this test.
+    
+    .PARAMETER CommandPath
+        List of paths under which the script files are stored.
+        This test assumes that all functions have their own file that is named after themselves.
+        These paths are used to search for commands that should exist and be tested.
+        Will search recursively and accepts wildcards, make sure only functions are found
 
-	.PARAMETER ModuleName
-		Name of the module to be tested.
-		The module must already be imported
+    .PARAMETER ModuleName
+        Name of the module to be tested.
+        The module must already be imported
 
-	.PARAMETER ExceptionsFile
-		File in which exceptions and adjustments are configured.
-		In it there should be two arrays and a hashtable defined:
-			$global:FunctionHelpTestExceptions
-			$global:HelpTestEnumeratedArrays
-			$global:HelpTestSkipParameterType
-		These can be used to tweak the tests slightly in cases of need.
-		See the example file for explanations on each of these usage and effect.
+    .PARAMETER ExceptionsFile
+        File in which exceptions and adjustments are configured.
+        In it there should be two arrays and a hashtable defined:
+            $global:FunctionHelpTestExceptions
+            $global:HelpTestEnumeratedArrays
+            $global:HelpTestSkipParameterType
+        These can be used to tweak the tests slightly in cases of need.
+        See the example file for explanations on each of these usage and effect.
 #>
 [CmdletBinding()]
 Param (
-	[switch]
-	$SkipTest,
-	
-	[string[]]
-	$CommandPath = @("$PSScriptRoot\..\..\functions", "$PSScriptRoot\..\..\internal\functions"),
-	
-	[string]
-	$ModuleName = "Daybreak2018",
-	
-	[string]
-	$ExceptionsFile = "$PSScriptRoot\Help.Exceptions.ps1"
+    [switch]
+    $SkipTest,
+    
+    [string[]]
+    $CommandPath = @("$PSScriptRoot\..\..\functions", "$PSScriptRoot\..\..\internal\functions"),
+    
+    [string]
+    $ModuleName = "Daybreak2018",
+    
+    [string]
+    $ExceptionsFile = "$PSScriptRoot\Help.Exceptions.ps1"
 )
 if ($SkipTest) { return }
 . $ExceptionsFile
@@ -156,8 +156,7 @@ foreach ($command in $commands) {
                         }
                         $testparamserrors += 1
                     }
-                }
-                elseif ($parameter.ParameterType.FullName -in $HelpTestEnumeratedArrays) {
+                } elseif ($parameter.ParameterType.FullName -in $HelpTestEnumeratedArrays) {
                     # Enumerations often have issues with the typename not being reliably available
                     $names = [Enum]::GetNames($parameter.ParameterType.DeclaredMembers[0].ReturnType)
                     if ($parameterHelp.parameterValueGroup.parameterValue -ne $names) {
@@ -167,8 +166,7 @@ foreach ($command in $commands) {
                         }
                         $testparamserrors += 1
                     }
-                }
-                else {
+                } else {
                     # To avoid calling Trim method on a null object.
                     $helpType = if ($parameterHelp.parameterValue) { $parameterHelp.parameterValue.Trim() }
                     if ($helpType -ne $codeType) {
