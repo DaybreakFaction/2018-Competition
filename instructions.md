@@ -41,3 +41,19 @@ There should be a different address for each department. At least 1 address shou
 The account should be placed in an OU that’s dependent on department
 
 Each user should be added to a department-based group - all members of the same department are members of the group.
+
+Users should be randomly allocated to one of four groups e.g. domaingroup1, domaingroup2, domaingroup3, or domaingroup4. The group names should be based on the domain name.
+
+All user accounts, groups and OUs should be protected from accidental deletion.
+
+## Part 2
+
+This assume that a new user will be manually handed the details they need to perform their first logon.
+
+* Reset the user's password following the guidelines in part 1
+* Enable the account
+* Set the account so the user has to charge the password at first logon
+* Print the following information so that it con handed to the user:
+  * Full name
+  * Logon id
+  * Password
