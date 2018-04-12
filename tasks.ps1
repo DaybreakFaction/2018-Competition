@@ -1,4 +1,5 @@
 @{
 	PasswordValidation = ""
 	CreateHomeWithPermissions = ""
+	GetLogonId = ""
 }
