@@ -1,3 +1,4 @@
+#Requires -Version 5.0
 $script:ModuleRoot = $PSScriptRoot
 $script:ModuleVersion = "1.0.0.0"
 
@@ -26,25 +27,35 @@ function Import-ModuleFile {
         $Path
     )
     
-    if ($doDotSource) { . $Path } else { $ExecutionContext.InvokeCommand.InvokeScript($false, ([scriptblock]::Create([io.file]::ReadAllText($Path))), $null, $null) }
+    if ($doDotSource) {
+        . $Path
+    } else {
+        $ExecutionContext.InvokeCommand.InvokeScript($false, ([scriptblock]::Create([io.file]::ReadAllText($Path))), $null, $null)
+    }
 }
 
 # Detect whether at some level dotsourcing was enforced
 $script:doDotSource = Get-PSFConfigValue -FullName Daybreak2018.Import.DoDotSource -Fallback $false
-if ($Daybreak2018_dotsourcemodule) { $script:doDotSource = $true }
-
-# Execute Preimport actions
-. Import-ModuleFile -Path "$ModuleRoot\internal\scripts\preimport.ps1"
-
-# Import all internal functions
-foreach ($function in (Get-ChildItem "$ModuleRoot\internal\functions" -Filter "*.ps1" -Recurse -ErrorAction Ignore)) {
-    . Import-ModuleFile -Path $function.FullName
+if ($Daybreak2018_dotsourcemodule) { 
+    $script:doDotSource = $true
 }
 
-# Import all public functions
-foreach ($function in (Get-ChildItem "$ModuleRoot\functions" -Filter "*.ps1" -Recurse -ErrorAction Ignore)) {
-    . Import-ModuleFile -Path $function.FullName
-}
+# Add prerequisties to this location
 
-# Execute Postimport actions
-. Import-ModuleFile -Path "$ModuleRoot\internal\scripts\postimport.ps1"
+
+# Importing public and private functions
+$Public  = @( Get-ChildItem -Path $PSScriptRoot\Public\*.ps1 -Recurse -ErrorAction SilentlyContinue )
+$Private = @( Get-ChildItem -Path $PSScriptRoot\Private\*.ps1 -Recurse -ErrorAction SilentlyContinue )
+
+#Dot source the files
+Foreach($import in @($Public + $Private))
+{
+    Try
+    {
+        Import-ModuleFile -Path $import.fullname
+    }
+    Catch
+    {
+        Write-Error -Message "Failed to import function $($import.fullname): $_"
+    }
+}
